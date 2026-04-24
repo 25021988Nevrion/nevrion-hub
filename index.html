@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nevrion Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo-img">NVR</div>
+      <div>
+        <div class="brand-name">Nevrion Hub</div>
+        <div class="brand-sub">Esports · Rankings</div>
+      </div>
+    </div>
+    <div class="live-badge"><span class="live-dot"></span>Live</div>
+  </div>
+
+  <div class="stripe"></div>
+
+  <div class="content">
+    <div class="section-title">Ranking da equipe</div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Player</th>
+          <th>J</th>
+          <th>V</th>
+          <th>E</th>
+          <th>D</th>
+          <th>Desempenho</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+
+    <div class="btn-row">
+      <button class="btn btn-yellow" onclick="openModal(null)">+ Adicionar player</button>
+      <button class="btn" onclick="openModal('edit')">Atualizar resultado</button>
+      <button class="btn btn-red" onclick="confirmZerar()">Zerar tudo</button>
+    </div>
+
+    <div class="update-info" id="update-info">Aguardando primeira atualização...</div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-bg" id="modal-bg">
+    <div class="modal">
+      <h3 id="modal-title">Adicionar player</h3>
+      <div class="field"><label>Nome do player</label><input id="f-name" placeholder="Ex: xXNevrionXx"/></div>
+      <div class="field"><label>Vitórias</label><input id="f-v" type="number" min="0" value="0"/></div>
+      <div class="field"><label>Empates</label><input id="f-e" type="number" min="0" value="0"/></div>
+      <div class="field"><label>Derrotas</label><input id="f-d" type="number" min="0" value="0"/></div>
+      <div class="modal-btns">
+        <button class="btn" onclick="closeModal()">Cancelar</button>
+        <button class="btn btn-yellow" onclick="savePlayer()">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
