@@ -1,6 +1,19 @@
+const SENHA_ADMIN = "King269";
+let adminLogado = false;
 let players = [];
 try { players = JSON.parse(localStorage.getItem('nevrion_v2') || '[]'); } catch(e) {}
 let editIndex = null;
+
+function verificarAdmin(acao) {
+  if (adminLogado) { acao(); return; }
+  const senha = prompt("🔐 Digite a senha de administrador:");
+  if (senha === SENHA_ADMIN) {
+    adminLogado = true;
+    acao();
+  } else {
+    alert("❌ Senha incorreta!");
+  }
+}
 
 function save() {
   try { localStorage.setItem('nevrion_v2', JSON.stringify(players)); } catch(e) {}
@@ -48,7 +61,7 @@ function renderTable() {
             <span class="pct-val">${pc}%</span>
           </div>
         </td>
-        <td><button class="btn-edit" onclick="openModal(${origIdx})">editar</button></td>
+        <td><button class="btn-edit" onclick="verificarAdmin(() => openModal(${origIdx}))">editar</button></td>
       </tr>`;
   });
 }
@@ -105,13 +118,15 @@ function savePlayer() {
 }
 
 function confirmZerar() {
-  if (confirm('Zerar todos os resultados? Essa ação não pode ser desfeita.')) {
-    players = players.map(p => ({ ...p, v: 0, e: 0, d: 0 }));
-    save();
-    renderTable();
-    setInfo('Resultados zerados em ' + new Date().toLocaleString('pt-BR'));
-    toast('Zerado!');
-  }
+  verificarAdmin(() => {
+    if (confirm('Zerar todos os resultados? Essa ação não pode ser desfeita.')) {
+      players = players.map(p => ({ ...p, v: 0, e: 0, d: 0 }));
+      save();
+      renderTable();
+      setInfo('Resultados zerados em ' + new Date().toLocaleString('pt-BR'));
+      toast('Zerado!');
+    }
+  });
 }
 
 function setInfo(msg) {
@@ -124,5 +139,15 @@ function toast(msg) {
   t.style.display = 'block';
   setTimeout(() => t.style.display = 'none', 2500);
 }
+
+// Protege os botões de adicionar e atualizar
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('.btn-yellow').addEventListener('click', () => {
+    verificarAdmin(() => openModal(null));
+  });
+  document.querySelectorAll('.btn')[1].addEventListener('click', () => {
+    verificarAdmin(() => openModal('edit'));
+  });
+});
 
 renderTable();
